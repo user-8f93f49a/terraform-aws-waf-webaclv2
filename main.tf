@@ -2796,7 +2796,7 @@ resource "aws_wafv2_web_acl" "main" {
 
                 # scope down ip_set_reference_statement
                 dynamic "ip_set_reference_statement" {
-                  for_each = contains(keys(scope_down_statement.value), "ip_set_reference_statement") && scope_down_statement.value["ip_set_reference_statement"] != null ? [lookup(scope_down_statement.value, "ip_set_reference_statement", {})] : []
+                  for_each = length(lookup(scope_down_statement.value, "ip_set_reference_statement", {})) == 0 ? [] : [lookup(scope_down_statement.value, "ip_set_reference_statement", {})]
                   content {
                     arn = lookup(ip_set_reference_statement.value, "arn")
                     dynamic "ip_set_forwarded_ip_config" {
